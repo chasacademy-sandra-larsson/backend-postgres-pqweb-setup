@@ -87,6 +87,14 @@ sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
 
 Testa att ansluta till databasen:
 
+**Mac:**
+
+```bash
+psql -d mydb
+```
+
+**Windows/Linux:**
+
 ```bash
 psql -h localhost -U postgres -d mydb
 ```
@@ -120,10 +128,16 @@ sudo mv pgweb_linux_amd64 /usr/local/bin/pgweb
 
 ### Starta pgweb
 
+**Mac** (inget lösenord):
+
+```bash
+pgweb --url postgresql://localhost:5432/mydb
+```
+
+**Windows/Linux** (med lösenord):
+
 ```bash
 pgweb --url postgresql://postgres:ditt_lösenord@localhost:5432/mydb
-# Eller utan lösenord (t.ex. Mac med Homebrew/Postgres.app):
-pgweb --url postgresql://localhost:5432/mydb
 ```
 
 Öppna sedan [http://localhost:8081](http://localhost:8081) i webbläsaren.
@@ -132,9 +146,23 @@ pgweb --url postgresql://localhost:5432/mydb
 
 Se till att `.env` i projektet matchar din installation:
 
+**Mac** (inget lösenord krävs som standard):
+
+```
+DATABASE_URL=postgresql://localhost:5432/mydb
+PORT=3000
+```
+
+**Windows** (du valde lösenord under installationen):
+
 ```
 DATABASE_URL=postgresql://postgres:ditt_lösenord@localhost:5432/mydb
 PORT=3000
 ```
 
-Byt ut `ditt_lösenord` mot det lösenord du angav under installationen.
+**Linux** (efter att du satt lösenord enligt stegen ovan):
+
+```
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mydb
+PORT=3000
+```
