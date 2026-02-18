@@ -1,4 +1,4 @@
-# 1. Installera PostgreSQL lokalt
+# 1. Installera PostgreSQL lokalt 🗂️
 
 ## Mac
 
@@ -51,7 +51,7 @@ PostgreSQL startar automatiskt. Verifiera:
 sudo systemctl status postgresql
 ```
 
-# 2. Skapa databasen
+# 2. Skapa databasen ✚
 
 Efter installationen behöver du skapa databasen `mydb`.
 
@@ -126,7 +126,7 @@ unzip pgweb_linux_amd64.zip
 sudo mv pgweb_linux_amd64 /usr/local/bin/pgweb
 ```
 
-# 3. Starta pgweb 
+# 3. Starta pgweb 🌐
 
 ## Pgweb är ett grafisk gränsnitt av databasen i browsern. Här kan du enkelt se innehållet och körs SQL-queries
 
@@ -144,7 +144,7 @@ pgweb --url postgresql://postgres:ditt_lösenord@localhost:5432/mydb
 
 Öppna sedan [http://localhost:8081](http://localhost:8081) i webbläsaren.
 
-# 4. Koppla den lokala Postgresdatabasen i din applikation (.env-fil)
+# 4. Koppla den lokala Postgresdatabasen i din applikation (.env-fil) 🧑🏾‍💻
 
 Se till att `.env` i projektet matchar din installation:
 
