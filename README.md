@@ -1,4 +1,4 @@
-1. # Installera PostgreSQL lokalt
+# 1. Installera PostgreSQL lokalt
 
 ## Mac
 
