@@ -1,170 +1,135 @@
-# 1. Installera PostgreSQL lokalt 🗂️
+# PostgreSQL – Kom igång lokalt
 
-## Mac
+## Innehåll
+1. [Installera PostgreSQL](#1-installera-postgresql)
+2. [Skapa databasen](#2-skapa-databasen)
+3. [Installera & starta pgweb](#3-installera--starta-pgweb)
+4. [Konfigurera .env-filen](#4-konfigurera-env-filen)
 
-### Alternativ 1 - Homebrew (rekommenderat)
+---
 
+## 1. Installera PostgreSQL 🗂️
+
+### Mac
+
+**Alternativ 1 – Homebrew (rekommenderat)**
 ```bash
 brew install postgresql@17
+brew services start postgresql@17   # Starta
+brew services stop postgresql@17    # Stoppa
 ```
 
-Starta PostgreSQL:
-
-```bash
-brew services start postgresql@17
-```
-
-Stoppa PostgreSQL:
-
-```bash
-brew services stop postgresql@17
-```
-
-### Alternativ 2 - Postgres.app
-
+**Alternativ 2 – Postgres.app**
 1. Ladda ner [Postgres.app](https://postgresapp.com/)
 2. Dra appen till Applications
-3. Starta appen - klicka "Initialize" för att skapa en server
+3. Starta appen och klicka **Initialize**
 
-## Windows
+---
 
-1. Ladda ner installern från [postgresql.org/download/windows](https://www.postgresql.org/download/windows/)
-2. Kör installern och följ stegen:
-   - Välj senaste versionen (PostgreSQL 17)
+### Windows
+1. Ladda ner installern från [postgresql.org](https://www.postgresql.org/download/windows/)
+2. Kör installern:
+   - Välj **PostgreSQL 17**
    - Behåll standardport **5432**
-   - Ange ett lösenord för användaren `postgres` (kom ihåg det!)
+   - Ange ett lösenord för `postgres` – **kom ihåg det!**
    - Kryssa i **pgAdmin 4** om du vill ha ett grafiskt verktyg
-3. Klicka "Next" genom resten och avsluta installationen
+3. Slutför installationen – PostgreSQL startar automatiskt som en Windows-tjänst
 
-PostgreSQL startar automatiskt som en Windows-tjänst.
+---
 
-## Linux (Ubuntu/Debian)
-
+### Linux (Ubuntu/Debian)
 ```bash
-sudo apt update
-sudo apt install -y postgresql postgresql-contrib
+sudo apt update && sudo apt install -y postgresql postgresql-contrib
+sudo systemctl status postgresql   # Verifiera att tjänsten är igång
 ```
 
-PostgreSQL startar automatiskt. Verifiera:
+---
 
-```bash
-sudo systemctl status postgresql
-```
+## 2. Skapa databasen ✚
 
-# 2. Skapa databasen ✚
-
-Efter installationen behöver du skapa databasen `mydb`.
-
-## Mac (Homebrew / Postgres.app)
-
+### Mac
 ```bash
 createdb mydb
 ```
 
-## Windows
-
-Öppna **SQL Shell (psql)** från startmenyn. Logga in med lösenordet du valde under installationen och kör:
-
+### Windows
+Öppna **SQL Shell (psql)** från startmenyn, logga in och kör:
 ```sql
 CREATE DATABASE mydb;
+\q
 ```
 
-Skriv `\q` för att avsluta.
-
-## Linux
-
+### Linux
 ```bash
 sudo -u postgres createdb mydb
-```
-
-På Linux behöver du också skapa ett lösenord för postgres-användaren:
-
-```bash
 sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
 ```
 
-## Verifiera
+### Verifiera anslutningen
 
-Testa att ansluta till databasen:
+| Platform | Kommando |
+|---|---|
+| Mac | `psql -d mydb` |
+| Windows / Linux | `psql -h localhost -U postgres -d mydb` |
 
-**Mac:**
+Ange lösenordet när du blir ombedd. Lyckas du komma in i psql-prompten fungerar allt. Skriv `\q` för att avsluta.
 
-```bash
-psql -d mydb
-```
+---
 
-**Windows/Linux:**
+## 3. Installera & starta pgweb 🌐
 
-```bash
-psql -h localhost -U postgres -d mydb
-```
+pgweb är ett enkelt webbgränssnitt för PostgreSQL som körs direkt i webbläsaren.
 
-Ange lösenordet när du blir ombedd. Om du kommer in i psql-prompten fungerar allt. Skriv `\q` för att avsluta.
+### Installation
 
-## pgweb - Grafiskt webbgränssnitt
-
-pgweb är ett enkelt webbgränssnitt för PostgreSQL som körs i webbläsaren.
-
-### Mac
-
+**Mac**
 ```bash
 brew install pgweb
 ```
 
-### Windows
+**Windows** – Ladda ner senaste `.exe` från [pgweb releases](https://github.com/sosedoff/pgweb/releases)
 
-Ladda ner senaste `.exe` från [github.com/sosedoff/pgweb/releases](https://github.com/sosedoff/pgweb/releases).
-
-### Linux
-
-Ladda ner senaste binären från [github.com/sosedoff/pgweb/releases](https://github.com/sosedoff/pgweb/releases):
-
+**Linux**
 ```bash
-# Ladda ner (byt version om det finns en nyare)
 wget https://github.com/sosedoff/pgweb/releases/latest/download/pgweb_linux_amd64.zip
 unzip pgweb_linux_amd64.zip
 sudo mv pgweb_linux_amd64 /usr/local/bin/pgweb
 ```
 
-# 3. Starta pgweb 🌐
-
-## Pgweb är ett grafisk gränsnitt av databasen i browsern. Här kan du enkelt se innehållet och körs SQL-queries
+### Starta pgweb
 
 **Mac** (inget lösenord):
-
 ```bash
 pgweb --url postgresql://localhost:5432/mydb
 ```
 
-**Windows/Linux** (med lösenord):
-
+**Windows / Linux** (med lösenord):
 ```bash
 pgweb --url postgresql://postgres:ditt_lösenord@localhost:5432/mydb
 ```
 
-Öppna sedan [http://localhost:8081](http://localhost:8081) i webbläsaren.
+Öppna sedan → [http://localhost:8081](http://localhost:8081)
 
-# 4. Koppla den lokala Postgresdatabasen i din applikation (.env-fil) 🧑🏾‍💻
+---
 
-Se till att `.env` i projektet matchar din installation:
+## 4. Konfigurera .env-filen 🧑🏾‍💻
 
-**Mac** (inget lösenord krävs som standard):
+Skapa eller uppdatera `.env` i projektroten:
 
-```
+**Mac** (inget lösenord som standard):
+```env
 DATABASE_URL=postgresql://localhost:5432/mydb
 PORT=3000
 ```
 
-**Windows** (du valde lösenord under installationen):
-
-```
+**Windows**:
+```env
 DATABASE_URL=postgresql://postgres:ditt_lösenord@localhost:5432/mydb
 PORT=3000
 ```
 
-**Linux** (efter att du satt lösenord enligt stegen ovan):
-
-```
+**Linux**:
+```env
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mydb
 PORT=3000
 ```
